@@ -1,5 +1,6 @@
 package com.cirodevs.indrverclonekotlin.presentation.screens.auth.login.components
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,41 +22,43 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.cirodevs.indrverclonekotlin.R
+import com.cirodevs.indrverclonekotlin.presentation.components.DefaultButtom
 import com.cirodevs.indrverclonekotlin.presentation.components.DefaultTextField
 import com.cirodevs.indrverclonekotlin.presentation.navigation.screen.auth.AuthScreen
+import com.cirodevs.indrverclonekotlin.presentation.screens.auth.login.LoginViewModel
 
 
 // recordar que aqui pasamos los valores obligatorios nav, paddings
 @Composable
-fun LoginContents ( navHostController: NavHostController,paddingValues: PaddingValues){
-    var email by remember {
-        mutableStateOf("")
+fun LoginContents ( navHostController: NavHostController,
+                    paddingValues: PaddingValues,
+                    vm : LoginViewModel = hiltViewModel()
+){
+    val state = vm.state
+    val context = LocalContext.current // pasamos el contexto porque no se puede llamar directamente en el viewModel
+    LaunchedEffect  (key1 = vm.errorMessage) {
+        if (vm.errorMessage.isNotEmpty()) {
+            // para mostrar el error
+            Toast.makeText(context, vm.errorMessage, Toast.LENGTH_SHORT).show()
+        }
     }
-
-    var password by remember {
-        mutableStateOf("")
-    }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -164,10 +167,10 @@ fun LoginContents ( navHostController: NavHostController,paddingValues: PaddingV
 
             DefaultTextField(
                 modifier = Modifier,
-                value = email,
+                value = state.email,
                 label = "Email",
                 icon = Icons.Outlined.Email,
-                onValueChange = { email = it },
+                onValueChange = { vm.onEmailInput(it) },
                 hideText = false,
                 keyboardType = KeyboardType.Email
             )
@@ -177,10 +180,10 @@ fun LoginContents ( navHostController: NavHostController,paddingValues: PaddingV
 
             DefaultTextField(
                 modifier = Modifier,
-                value = password,
+                value = state.password,
                 label = "Password",
                 icon = Icons.Outlined.Lock,
-                onValueChange = { password = it },
+                onValueChange = { vm.onPasswordInput(it) },
                 hideText = true
             )
 
@@ -188,27 +191,19 @@ fun LoginContents ( navHostController: NavHostController,paddingValues: PaddingV
             // el peso de 1f es para que ocupe todo el espacio disponible
             Spacer(modifier = Modifier.weight(1f))
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
+            DefaultButtom(
+                modifier = Modifier,
+                text = "Login",
+                onclick = {
+                    //Log.d( "Login contents", "Email: ${email}")
+                    vm.login()
 
-            ) {
-                Button(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .width(250.dp)
-                        .height(55.dp),
-                    onClick = {},
-                    colors = ButtonDefaults.buttonColors(Color.Black)
-                ) {
-                    Text(
-                        text = "Login",
-                        fontSize = 18.sp,
-                        color = Color.White
-                    )
-                }
+                },
+                color = Color.Black,
+                height = 60.dp,
+                width = 300.dp
+            )
 
-            }
             Spacer(modifier = Modifier.height(20.dp))
 
             Row(

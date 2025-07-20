@@ -1,5 +1,6 @@
 package com.cirodevs.indrverclonekotlin.presentation.screens.auth.register.contents
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,38 +36,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.cirodevs.indrverclonekotlin.R
 import com.cirodevs.indrverclonekotlin.presentation.components.DefaultButtom
 import com.cirodevs.indrverclonekotlin.presentation.components.DefaultOutlineTextField
+import com.cirodevs.indrverclonekotlin.presentation.screens.auth.register.RegisterViewModel
 
 
 @Composable
 fun RegisterContents(
-     navHostController: NavHostController,paddingValues: PaddingValues
+    navHostController: NavHostController,
+    paddingValues: PaddingValues,
+    vm: RegisterViewModel = hiltViewModel()
 ) {
-    var email by remember {
-        mutableStateOf("")
-    }
-    var name by remember {
-        mutableStateOf("")
-    }
-    var lastname by remember {
-        mutableStateOf("")
-    }
-    var phone by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
-    var confirmpassword by remember {
-        mutableStateOf("")
+    val state = vm.state
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = vm.errorMessage) {
+        if (vm.errorMessage.isNotEmpty()) {
+            Toast.makeText(context, vm.errorMessage, Toast.LENGTH_SHORT).show()
+
+        }
     }
 
     Box(
@@ -79,13 +77,13 @@ fun RegisterContents(
                 )
             )
             .padding(paddingValues)
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
-        ){
+        ) {
             Text(
                 text = "Login",
                 color = Color.Black,
@@ -125,84 +123,84 @@ fun RegisterContents(
                         bottomStart = 35.dp
                     )
                 )
-        ){
+        ) {
             //box content
             Column(
                 modifier = Modifier
                     .statusBarsPadding(),
                 horizontalAlignment = Alignment.CenterHorizontally
 
-            ){
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp)
-                ){
+                ) {
                     Image(
                         // aqui debemos cambiar la imagen a algo relacionado a un registro
                         modifier = Modifier
                             .size(250.dp)
                             .align(Alignment.Center),
-                        painter = painterResource(id = R.drawable.car_white) ,
+                        painter = painterResource(id = R.drawable.car_white),
                         contentDescription = null,
                     )
                 }
                 //FORMS
                 DefaultOutlineTextField(
-                    modifier = Modifier,
-                    value = name,
+                    modifier = Modifier.padding(top = 3.dp),
+                    value = state.name,
                     label = "Nombre",
                     icon = Icons.Outlined.Person,
-                    onValueChange ={ name = it }
+                    onValueChange = { vm.onNameInput(it)  }
 
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlineTextField(
                     modifier = Modifier,
-                    value = lastname,
+                    value = state.lastName,
                     label = "Apellido",
                     icon = Icons.Outlined.Person,
-                    onValueChange ={ lastname = it }
+                    onValueChange = { vm.onLastNameInput(it) }
 
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlineTextField(
                     modifier = Modifier,
-                    value = email,
+                    value = state.email,
                     label = "Email",
                     icon = Icons.Outlined.Email,
                     keyboardType = KeyboardType.Email,
-                    onValueChange ={ email = it }
+                    onValueChange = { vm.onEmailInput(it) }
 
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlineTextField(
                     modifier = Modifier,
-                    value = phone,
+                    value = state.phone,
                     label = "Telefono",
                     icon = Icons.Outlined.Phone,
                     keyboardType = KeyboardType.Number,
-                    onValueChange ={ phone = it }
+                    onValueChange = { vm.onPhoneInput(it) }
 
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlineTextField(
                     modifier = Modifier,
-                    value = password,
+                    value = state.password,
                     label = "Password",
                     icon = Icons.Outlined.Lock,
                     hideText = true,
-                    onValueChange ={ password = it }
+                    onValueChange = { vm.onPasswordInput(it) }
 
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlineTextField(
                     modifier = Modifier,
-                    value = confirmpassword,
+                    value = state.confirmPassword,
                     label = "Confirmar password",
                     icon = Icons.Outlined.Lock,
                     hideText = true,
-                    onValueChange ={ confirmpassword = it }
+                    onValueChange = { vm.onConfirmPasswordInput(it) }
 
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -210,7 +208,7 @@ fun RegisterContents(
                 DefaultButtom(
                     modifier = Modifier,
                     text = "Crear cuenta",
-                    onclick = { /*TODO*/ },
+                    onclick = { vm.register() },
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -221,10 +219,11 @@ fun RegisterContents(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Spacer(modifier = Modifier
-                        .width(30.dp)
-                        .height(1.dp)
-                        .background(color = Color.Black)
+                    Spacer(
+                        modifier = Modifier
+                            .width(30.dp)
+                            .height(1.dp)
+                            .background(color = Color.Black)
                     )
                     Text(
                         modifier = Modifier.padding(horizontal = 7.dp),
@@ -232,10 +231,11 @@ fun RegisterContents(
                         color = Color.Black,
                         fontSize = 12.sp
                     )
-                    Spacer(modifier = Modifier
-                        .width(30.dp)
-                        .height(1.dp)
-                        .background(color = Color.Black)
+                    Spacer(
+                        modifier = Modifier
+                            .width(30.dp)
+                            .height(1.dp)
+                            .background(color = Color.Black)
                     )
                 }
 
@@ -247,7 +247,7 @@ fun RegisterContents(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
 
-                    ){
+                    ) {
                     Text(
                         text = "Ya tienes cuenta?",
                         color = Color.Black,
@@ -255,7 +255,7 @@ fun RegisterContents(
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(
-                        modifier = Modifier.clickable {navHostController.popBackStack() },
+                        modifier = Modifier.clickable { navHostController.popBackStack() },
                         text = "Inicia sesion",
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,

@@ -14,7 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.cirodevs.indrverclonekotlin.presentation.navigation.graph.root.RootNavGraph
 import com.cirodevs.indrverclonekotlin.presentation.screens.auth.login.LoginScreen
 import com.cirodevs.indrverclonekotlin.ui.theme.InDriverCloneKotlinTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
