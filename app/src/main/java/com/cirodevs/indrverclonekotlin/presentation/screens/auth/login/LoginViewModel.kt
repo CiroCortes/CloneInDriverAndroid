@@ -6,16 +6,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.cirodevs.indrverclonekotlin.domain.model.AuthResponse
+import com.cirodevs.indrverclonekotlin.domain.useCases.auth.AuthUseCases
+import com.cirodevs.indrverclonekotlin.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(private val authUseCase: AuthUseCases) : ViewModel() {
 
     var state by mutableStateOf(LoginState())
         private set
 
     var errorMessage by mutableStateOf("")
+
+    var loginResponse by mutableStateOf<Resource<AuthResponse>?>(null)
+        private set
+
 
     fun onEmailInput(email: String) {
         state = state.copy( email = email)
@@ -23,9 +32,17 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     fun onPasswordInput(password: String) {
         state = state.copy( password = password)
     }
-     fun login() {
+    // here we use the viewmodelScope for the coroutines of the login, also we don't know
+    // the result of the login is now o may be later
+     fun login() = viewModelScope.launch {
          if(isValidForm()){
+             loginResponse = Resource.Loading // this indicates that the login is in progress
              Log.d("LoginViewModel", "Email: ${state.email}, Password: ${state.password}")
+             val result = authUseCase.login(state.email, state.password)
+             // later we obten the result of the login, store these results in the loginResponse
+             // may be it SUCCESS or FAILURE
+             loginResponse = result
+             Log.d("LoginViewModel", "Result: $result")
          }
 
      }

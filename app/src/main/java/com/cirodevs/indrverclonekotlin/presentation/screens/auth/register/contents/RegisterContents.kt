@@ -157,7 +157,7 @@ fun RegisterContents(
                 Spacer(modifier = Modifier.height(10.dp))
                 DefaultOutlineTextField(
                     modifier = Modifier,
-                    value = state.lastName,
+                    value = state.lastname,
                     label = "Apellido",
                     icon = Icons.Outlined.Person,
                     onValueChange = { vm.onLastNameInput(it) }

@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.cirodevs.indrverclonekotlin.presentation.navigation.screen.auth.AuthScreen
+import com.cirodevs.indrverclonekotlin.presentation.screens.auth.register.contents.Register
 import com.cirodevs.indrverclonekotlin.presentation.screens.auth.register.contents.RegisterContents
 import com.cirodevs.indrverclonekotlin.ui.theme.InDriverCloneKotlinTheme
 
@@ -19,6 +21,7 @@ fun ResgisterScreen (navHostController: NavHostController){
         )
 
     }
+    Register()
 }
 @Preview( showBackground = true , showSystemUi = true)
 @Composable

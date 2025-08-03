@@ -6,21 +6,51 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.cirodevs.indrverclonekotlin.domain.model.AuthResponse
+import com.cirodevs.indrverclonekotlin.domain.useCases.auth.AuthUseCases
+import com.cirodevs.indrverclonekotlin.domain.util.Resource
+import com.cirodevs.indrverclonekotlin.presentation.screens.auth.register.mapper.toUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor() : ViewModel() {
+class RegisterViewModel @Inject constructor(
+    private val authUseCase: AuthUseCases
+) : ViewModel() {
 
     var state by mutableStateOf(RegisterState())
         private set
     var errorMessage by mutableStateOf("")
 
+    var registerResponse by mutableStateOf<Resource<AuthResponse>?>(null)
+
+    // remember here : we using a async function, so wen can use  the viewmodelScope
+    fun register() = viewModelScope.launch {
+        if (isValidForm()) {
+            registerResponse = Resource.Loading
+            val result = authUseCase.register(state.toUser())
+            registerResponse = result
+
+
+            // I hold the Logs in console for testing
+            Log.d(
+                "RegisterViewModel",
+                "Name: ${state.name}, " +
+                        "LastName: ${state.lastname}, " +
+                        "Email: ${state.email}, " +
+                        "Phone: ${state.phone}, " +
+                        "Password: ${state.password}"
+            )
+        }
+    }
+
     fun onNameInput(name: String) {
         state = state.copy( name = name)
     }
     fun onLastNameInput(lastname: String) {
-        state = state.copy( lastName = lastname)
+        state = state.copy( lastname = lastname)
     }
     fun onEmailInput(email: String) {
         state = state.copy( email = email)
@@ -41,7 +71,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
             errorMessage = "Name is required"
             return false
         }
-        else if(state.lastName.isEmpty() ){
+        else if(state.lastname.isEmpty() ){
             errorMessage = "LastName is required"
             return false
         }
@@ -76,16 +106,5 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
 
         return true
     }
-    fun register() {
-        if (isValidForm()) {
-            Log.d(
-                "RegisterViewModel",
-                "Name: ${state.name}, " +
-                        "LastName: ${state.lastName}, " +
-                        "Email: ${state.email}, " +
-                        "Phone: ${state.phone}, " +
-                        "Password: ${state.password}"
-            )
-        }
-    }
+
 }
