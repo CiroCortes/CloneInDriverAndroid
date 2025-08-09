@@ -76,4 +76,7 @@ dependencies {
 
     // errors management
     implementation(libs.moshi.kotlin)
+
+    // local datastore
+    implementation (libs.androidx.datastore.preferences)
 }

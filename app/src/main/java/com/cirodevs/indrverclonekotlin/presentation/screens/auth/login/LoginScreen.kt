@@ -24,5 +24,5 @@ fun LoginScreen(navHostController: NavHostController) {
         )
 
     }
-    Login()
+    Login(navHostController)
 }

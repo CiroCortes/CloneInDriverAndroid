@@ -46,6 +46,10 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun saveSession(authResponse: AuthResponse) = viewModelScope.launch {
+        authUseCase.saveSession(authResponse)
+    }
+
     fun onNameInput(name: String) {
         state = state.copy( name = name)
     }

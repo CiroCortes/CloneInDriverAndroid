@@ -25,6 +25,11 @@ class LoginViewModel @Inject constructor(private val authUseCase: AuthUseCases) 
     var loginResponse by mutableStateOf<Resource<AuthResponse>?>(null)
         private set
 
+    // whit be came the session data
+    init{
+        getSessionData()
+    }
+
 
     fun onEmailInput(email: String) {
         state = state.copy( email = email)
@@ -46,6 +51,24 @@ class LoginViewModel @Inject constructor(private val authUseCase: AuthUseCases) 
          }
 
      }
+
+    fun getSessionData() = viewModelScope.launch {
+        authUseCase.getSessionData().collect { data ->
+            Log.d("LoginViewModel", "Data de sesion: ${data}")
+            // whit this we hold the sesion data in the app, also we validaye whit if
+            if(!data.token.isNullOrEmpty()) {
+                loginResponse = Resource.Success(data)
+            }
+
+
+
+
+        }
+    }
+
+    fun saveSession(authResponse: AuthResponse) = viewModelScope.launch {
+        authUseCase.saveSession(authResponse)
+    }
 
     fun isValidForm(): Boolean {
 

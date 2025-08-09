@@ -7,5 +7,8 @@ import javax.inject.Inject
 
 class AuthUseCases @Inject constructor (
     val login: LoginUseCase,
-    val register: RegisterUseCase
+    val register: RegisterUseCase,
+    val saveSession: SaveSessionUseCase,
+    val getSessionData: GetSessionDataUseCase,
+
 )
