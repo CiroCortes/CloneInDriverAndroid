@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.cirodevs.indrverclonekotlin.presentation.navigation.Graph
+import com.cirodevs.indrverclonekotlin.presentation.navigation.graph.profile.ProfileNavGraph
 import com.cirodevs.indrverclonekotlin.presentation.navigation.screen.auth.AuthScreen
 import com.cirodevs.indrverclonekotlin.presentation.navigation.screen.client.ClientScreen
 import com.cirodevs.indrverclonekotlin.presentation.screens.auth.login.LoginScreen
@@ -22,7 +23,11 @@ fun ClientNavGraph(navHostController: NavHostController) {
         route = Graph.CLIENT,
         startDestination = ClientScreen.MapSearcher.route
     ) {
-        composable(route = ClientScreen.ProfileInfo.route) { ProfileInfoScreen(navHostController = navHostController)}
-        composable(route = ClientScreen.MapSearcher.route) { ClientMapSearcherScreen(navHostController = navHostController) }
+        composable(route = ClientScreen.MapSearcher.route) {
+            ClientMapSearcherScreen(
+                navHostController = navHostController
+            )
+        }
+        ProfileNavGraph(navHostController)
     }
 }

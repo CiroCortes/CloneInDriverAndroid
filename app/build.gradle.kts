@@ -79,4 +79,8 @@ dependencies {
 
     // local datastore
     implementation (libs.androidx.datastore.preferences)
+
+    // coil image loader
+    //implementation(libs.coil.compose)
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }
