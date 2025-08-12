@@ -1,12 +1,15 @@
 package com.cirodevs.indrverclonekotlin.di
 
 import com.cirodevs.indrverclonekotlin.domain.repository.AuthRepository
+import com.cirodevs.indrverclonekotlin.domain.repository.UserRepository
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.AuthUseCases
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.GetSessionDataUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.LoginUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.LogoutUseCse
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.RegisterUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.SaveSessionUseCase
+import com.cirodevs.indrverclonekotlin.domain.useCases.user.UserUpdateUseCase
+import com.cirodevs.indrverclonekotlin.domain.useCases.user.UserUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +26,12 @@ object UseCaseModule {
             saveSession = SaveSessionUseCase(authRepository),
             getSessionData = GetSessionDataUseCase(authRepository),
             logout = LogoutUseCse(authRepository)
+
+    )
+
+    @Provides
+    fun provideUserUseCases(userRepository: UserRepository) = UserUseCases (
+      update = UserUpdateUseCase(userRepository)
 
     )
 

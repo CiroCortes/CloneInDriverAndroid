@@ -100,6 +100,7 @@ fun ProfileUpdateContent(
                 imageVector = Icons.Default.Edit,
                 onClick = {
 
+                    vm.update()
                 }
 
             )
