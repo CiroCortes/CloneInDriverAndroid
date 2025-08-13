@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,6 +63,7 @@ fun ProfileUpdateContent(
 
     val activity = LocalContext.current as Activity?
     val state = vm.state
+    vm.resultingActivityHandler.handle()
 
 
     Box(modifier = Modifier
@@ -128,27 +130,32 @@ fun ProfileUpdateContent(
                horizontalAlignment = Alignment.CenterHorizontally,
                verticalArrangement = Arrangement.Center
            ) {
-               Box(
-                   modifier = Modifier
-                       .padding(top = 5.dp)
-                       .size(150.dp)
-                       .clip(CircleShape)
-                       .background(Color.White)
-               ) {
-                   if (!vm.user?.image.isNullOrBlank()) { // not null or not void
-                      AsyncImage(
-                          model = vm.user?.image,
-                          contentDescription = null,
-                          contentScale = ContentScale.Crop // this property crop the image (adapt to father box)
-                      )
+               if (!state.image.isNullOrBlank()) { // not null or not void
+                   AsyncImage(
+                       modifier = Modifier
+                           .size(130.dp)
+                           .clip(CircleShape)
+                           .align(Alignment.CenterHorizontally)
+                           .clickable {
+                           vm.takePhoto()
+                       },
+                       model = state.image,
+                       contentDescription = null,
+                       contentScale = ContentScale.Crop // this property crop the image (adapt to father box)
+                   )
 
-                   }else {
-                       Image(
-                           painter = painterResource(id = R.drawable.user_image),
-                           contentDescription = null
-                       )
-                   }
-
+               }else {
+                   Image(
+                       modifier = Modifier
+                           .size(130.dp)
+                           .clip(CircleShape)
+                           .align(Alignment.CenterHorizontally)
+                           .clickable {
+                           vm.takePhoto()
+                       },
+                       painter = painterResource(id = R.drawable.user_image),
+                       contentDescription = null
+                   )
                }
                Spacer(modifier = Modifier.height(20.dp))
                // text name

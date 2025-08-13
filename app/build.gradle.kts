@@ -83,4 +83,7 @@ dependencies {
     // coil image loader
     //implementation(libs.coil.compose)
     implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // commons (file utils transformations)
+    implementation ("commons-io:commons-io:2.20.0")
 }
