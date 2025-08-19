@@ -28,6 +28,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,6 +51,7 @@ import com.cirodevs.indrverclonekotlin.MainActivity
 import com.cirodevs.indrverclonekotlin.R
 import com.cirodevs.indrverclonekotlin.presentation.components.DefaultIconButton
 import com.cirodevs.indrverclonekotlin.presentation.components.DefaultTextField
+import com.cirodevs.indrverclonekotlin.presentation.components.DialogCameraOrGallery
 import com.cirodevs.indrverclonekotlin.presentation.navigation.screen.profile.ProfileScreen
 import com.cirodevs.indrverclonekotlin.presentation.screens.profile.info.ProfileInfoViewModel
 import com.cirodevs.indrverclonekotlin.presentation.screens.profile.update.ProfileUpdateViewModel
@@ -64,6 +67,16 @@ fun ProfileUpdateContent(
     val activity = LocalContext.current as Activity?
     val state = vm.state
     vm.resultingActivityHandler.handle()
+    val stateDialog = remember {
+        mutableStateOf(false)
+    }
+
+   DialogCameraOrGallery(
+       state = stateDialog,
+       takePhoto = {vm.takePhoto()},
+       pickImage = {vm.pickImage()},
+   )
+
 
 
     Box(modifier = Modifier
@@ -102,7 +115,7 @@ fun ProfileUpdateContent(
                 imageVector = Icons.Default.Edit,
                 onClick = {
 
-                    vm.update()
+                    vm.submit()
                 }
 
             )
@@ -137,7 +150,7 @@ fun ProfileUpdateContent(
                            .clip(CircleShape)
                            .align(Alignment.CenterHorizontally)
                            .clickable {
-                           vm.takePhoto()
+                           stateDialog.value = true
                        },
                        model = state.image,
                        contentDescription = null,
@@ -151,7 +164,7 @@ fun ProfileUpdateContent(
                            .clip(CircleShape)
                            .align(Alignment.CenterHorizontally)
                            .clickable {
-                           vm.takePhoto()
+                               stateDialog.value = true
                        },
                        painter = painterResource(id = R.drawable.user_image),
                        contentDescription = null

@@ -40,6 +40,7 @@ fun UpdateUser (navHostController: NavHostController,vm : ProfileUpdateViewModel
 //                    }
 //                }
 //            }
+            vm.updateUserSession(response.data)
             Toast.makeText(context, "Datos actualizados", Toast.LENGTH_LONG).show()
 
         }

@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cirodevs.indrverclonekotlin.domain.model.User
+import com.cirodevs.indrverclonekotlin.domain.useCases.auth.AuthUseCases
 import com.cirodevs.indrverclonekotlin.domain.useCases.user.UserUseCases
 import com.cirodevs.indrverclonekotlin.domain.util.Resource
 import com.cirodevs.indrverclonekotlin.presentation.screens.profile.update.mapper.toUser
@@ -22,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileUpdateViewModel @Inject constructor(
+    private val authUseCases: AuthUseCases,
     private val userUseCases: UserUseCases,
     private val savedStateHandle : SavedStateHandle,
     @ApplicationContext private val context: Context
@@ -45,6 +47,28 @@ class ProfileUpdateViewModel @Inject constructor(
             phone = user.phone,
             image = user.image
         )
+    }
+
+    fun submit(){
+        if(file == null){
+            update()
+        }else{
+            updateWhitImage()
+        }
+    }
+
+    fun updateUserSession(userResponse: User) = viewModelScope.launch {
+        authUseCases.updateSession(userResponse)
+
+    }
+
+    fun updateWhitImage() = viewModelScope.launch {
+        // here we send image in the parameter file
+        updateResponse = Resource.Loading
+        val result = userUseCases.update(user.id.toString(), state.toUser(), file)
+        updateResponse = result
+
+
     }
 
     fun update() = viewModelScope.launch {

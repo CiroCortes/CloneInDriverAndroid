@@ -8,6 +8,7 @@ import com.cirodevs.indrverclonekotlin.domain.useCases.auth.LoginUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.LogoutUseCse
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.RegisterUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.SaveSessionUseCase
+import com.cirodevs.indrverclonekotlin.domain.useCases.auth.UpdateSessionUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.user.UserUpdateUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.user.UserUseCases
 import dagger.Module
@@ -25,7 +26,8 @@ object UseCaseModule {
             register = RegisterUseCase(authRepository),
             saveSession = SaveSessionUseCase(authRepository),
             getSessionData = GetSessionDataUseCase(authRepository),
-            logout = LogoutUseCse(authRepository)
+            logout = LogoutUseCse(authRepository),
+            updateSession = UpdateSessionUseCase(authRepository)
 
     )
 

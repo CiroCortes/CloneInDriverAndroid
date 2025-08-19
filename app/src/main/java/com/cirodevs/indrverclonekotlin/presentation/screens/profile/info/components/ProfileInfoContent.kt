@@ -132,27 +132,26 @@ fun ProfileInfoContent(navHostController: NavHostController, paddingValues: Padd
                horizontalAlignment = Alignment.CenterHorizontally,
                verticalArrangement = Arrangement.Center
            ) {
-               Box(
-                   modifier = Modifier
-                       .padding(top = 5.dp)
-                       .size(150.dp)
-                       .clip(CircleShape)
-                       .background(Color.White)
-               ) {
-                   if (!vm.user?.image.isNullOrBlank()) { // not null or not void
-                      AsyncImage(
-                          model = vm.user?.image,
-                          contentDescription = null,
-                          contentScale = ContentScale.Crop // this property crop the image (adapt to father box)
-                      )
+               if (!vm.user?.image.isNullOrBlank()) { // not null or not void
+                   AsyncImage(
+                       modifier = Modifier
+                           .size(120.dp)
+                           .clip(CircleShape)
+                           .align(Alignment.CenterHorizontally),
+                       model = vm.user?.image,
+                       contentDescription = null,
+                       contentScale = ContentScale.Crop // this property crop the image (adapt to father box)
+                   )
 
-                   }else {
-                       Image(
-                           painter = painterResource(id = R.drawable.user_image),
-                           contentDescription = null
-                       )
-                   }
-
+               }else {
+                   Image(
+                       modifier = Modifier
+                           .size(120.dp)
+                           .clip(CircleShape)
+                           .align(Alignment.CenterHorizontally),
+                       painter = painterResource(id = R.drawable.user_image),
+                       contentDescription = null
+                   )
                }
                Spacer(modifier = Modifier.height(20.dp))
                // text name

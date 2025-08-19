@@ -10,6 +10,7 @@ class AuthUseCases @Inject constructor (
     val register: RegisterUseCase,
     val saveSession: SaveSessionUseCase,
     val getSessionData: GetSessionDataUseCase,
-    val logout: LogoutUseCse
+    val logout: LogoutUseCse,
+    val updateSession: UpdateSessionUseCase
 
 )
