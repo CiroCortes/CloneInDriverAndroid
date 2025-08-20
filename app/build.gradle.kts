@@ -86,4 +86,9 @@ dependencies {
 
     // commons (file utils transformations)
     implementation ("commons-io:commons-io:2.20.0")
+
+    // Google Maps
+    implementation("com.google.maps.android:maps-compose:4.3.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
 }
