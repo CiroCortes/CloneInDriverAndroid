@@ -1,4 +1,4 @@
-package com.cirodevs.indrverclonekotlin.data.remote.dataSource.remote.services
+package com.cirodevs.indrverclonekotlin.data.dataSource.remote.services
 
 import com.cirodevs.indrverclonekotlin.domain.model.User
 import okhttp3.MultipartBody

@@ -1,14 +1,11 @@
-package com.cirodevs.indrverclonekotlin.data.remote.repository
+package com.cirodevs.indrverclonekotlin.data.repository
 
-import android.util.Log
-import com.cirodevs.indrverclonekotlin.data.local.datastore.LocalDataStore
-import com.cirodevs.indrverclonekotlin.data.remote.dataSource.remote.services.AuthService
+import com.cirodevs.indrverclonekotlin.data.dataSource.local.datastore.LocalDataStore
+import com.cirodevs.indrverclonekotlin.data.dataSource.remote.services.AuthService
 import com.cirodevs.indrverclonekotlin.data.util.HandleRequest
 import com.cirodevs.indrverclonekotlin.domain.model.AuthResponse
-import com.cirodevs.indrverclonekotlin.domain.model.ErrorResponse
 import com.cirodevs.indrverclonekotlin.domain.model.User
 import com.cirodevs.indrverclonekotlin.domain.repository.AuthRepository
-import com.cirodevs.indrverclonekotlin.domain.util.ErrorHelper
 import com.cirodevs.indrverclonekotlin.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 

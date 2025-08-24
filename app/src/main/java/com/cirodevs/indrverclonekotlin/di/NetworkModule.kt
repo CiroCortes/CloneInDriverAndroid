@@ -1,9 +1,9 @@
 package com.cirodevs.indrverclonekotlin.di
 
 import com.cirodevs.indrverclonekotlin.core.Config
-import com.cirodevs.indrverclonekotlin.data.local.datastore.LocalDataStore
-import com.cirodevs.indrverclonekotlin.data.remote.dataSource.remote.services.AuthService
-import com.cirodevs.indrverclonekotlin.data.remote.dataSource.remote.services.UserService
+import com.cirodevs.indrverclonekotlin.data.dataSource.local.datastore.LocalDataStore
+import com.cirodevs.indrverclonekotlin.data.dataSource.remote.services.AuthService
+import com.cirodevs.indrverclonekotlin.data.dataSource.remote.services.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

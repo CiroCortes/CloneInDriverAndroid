@@ -1,10 +1,10 @@
-package com.cirodevs.indrverclonekotlin.data.local.datastore
+package com.cirodevs.indrverclonekotlin.data.dataSource.local.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.cirodevs.indrverclonekotlin.core.Config.AUTH_KEY
+import com.cirodevs.indrverclonekotlin.core.Config
 import com.cirodevs.indrverclonekotlin.domain.model.AuthResponse
 import com.cirodevs.indrverclonekotlin.domain.model.User
 import kotlinx.coroutines.flow.Flow
@@ -12,19 +12,17 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
-// in this class we will use shared preferences for store the data
-
 class LocalDataStore( private val datastore : DataStore<Preferences>) {
 
     suspend fun save(authResponse: AuthResponse) {
-        val datastoreKey = stringPreferencesKey(AUTH_KEY)
+        val datastoreKey = stringPreferencesKey(Config.AUTH_KEY)
         datastore.edit { pref ->
             pref[datastoreKey] = authResponse.toJson()
         }
     }
 
     suspend fun update(user: User) {
-        val datastoreKey = stringPreferencesKey(AUTH_KEY)
+        val datastoreKey = stringPreferencesKey(Config.AUTH_KEY)
 
         val authResponse = runBlocking {
             getData().first() // the data is in the datastore, so we get it
@@ -50,18 +48,18 @@ class LocalDataStore( private val datastore : DataStore<Preferences>) {
     }
 
     suspend fun delete(){
-        val datastoreKey = stringPreferencesKey(AUTH_KEY)
+        val datastoreKey = stringPreferencesKey(Config.AUTH_KEY)
         datastore.edit { pref ->
             pref.remove(datastoreKey)
         }
     }
 
     fun getData(): Flow<AuthResponse> {
-        val datastoreKey = stringPreferencesKey(AUTH_KEY)
+        val datastoreKey = stringPreferencesKey(Config.AUTH_KEY)
         return datastore.data.map { pref ->
             // here we check if the value is null, if it is null we return an empty AuthResponse
             if (pref[datastoreKey] != null) {
-                AuthResponse.fromJson(pref[datastoreKey]!!)
+                AuthResponse.Companion.fromJson(pref[datastoreKey]!!)
             } else {
                 AuthResponse()
             }

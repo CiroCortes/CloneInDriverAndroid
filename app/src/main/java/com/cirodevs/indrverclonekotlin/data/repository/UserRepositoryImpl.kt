@@ -1,12 +1,9 @@
-package com.cirodevs.indrverclonekotlin.data.remote.repository
+package com.cirodevs.indrverclonekotlin.data.repository
 
-import android.util.Log
-import com.cirodevs.indrverclonekotlin.data.remote.dataSource.remote.services.UserService
+import com.cirodevs.indrverclonekotlin.data.dataSource.remote.services.UserService
 import com.cirodevs.indrverclonekotlin.data.util.HandleRequest
-import com.cirodevs.indrverclonekotlin.domain.model.ErrorResponse
 import com.cirodevs.indrverclonekotlin.domain.model.User
 import com.cirodevs.indrverclonekotlin.domain.repository.UserRepository
-import com.cirodevs.indrverclonekotlin.domain.util.ErrorHelper
 import com.cirodevs.indrverclonekotlin.domain.util.Resource
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

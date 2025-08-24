@@ -10,15 +10,16 @@ object ErrorHelper {
 
     fun handleError(errorBody: ResponseBody?): ErrorResponse? {
         return try {
-            errorBody?.string()?.let {
-                val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+            errorBody?.string()?.let { jsonString ->
+                val moshi = Moshi.Builder()
+                    .addLast(KotlinJsonAdapterFactory())
+                    .build()
                 val moshiAdapter = moshi.adapter(ErrorResponse::class.java)
-                moshiAdapter.fromJson(it)
+                moshiAdapter.fromJson(jsonString)
             }
         } catch (e: Exception) {
-            Log.d("ErrorHelper", "Error: ${e.message}")
+            Log.d("ErrorHelper", "Error al procesar la respuesta: ${e.message}")
             null
         }
-
     }
 }
