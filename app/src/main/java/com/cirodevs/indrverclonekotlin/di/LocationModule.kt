@@ -8,6 +8,9 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import com.cirodevs.indrverclonekotlin.core.Config.AUTH_PREF
 import com.cirodevs.indrverclonekotlin.data.dataSource.local.datastore.LocalDataStore
 import com.cirodevs.indrverclonekotlin.data.dataSource.location.LocationDataSource
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.net.PlacesClient
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +27,11 @@ object LocationModule {
     @Singleton
     fun provideLocationDataSource(@ApplicationContext context: Context): LocationDataSource =
         LocationDataSource(context)
+
+    @Provides
+    @Singleton
+    fun providePlacesClient(@ApplicationContext context: Context): PlacesClient = Places.createClient(context)
+
 
 
 

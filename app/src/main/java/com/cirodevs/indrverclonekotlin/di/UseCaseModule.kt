@@ -11,6 +11,8 @@ import com.cirodevs.indrverclonekotlin.domain.useCases.auth.RegisterUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.SaveSessionUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.auth.UpdateSessionUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.location.GetLocationUpdateUseCases
+import com.cirodevs.indrverclonekotlin.domain.useCases.location.GetPlaceDetailsUseCase
+import com.cirodevs.indrverclonekotlin.domain.useCases.location.GetPlacePredictionUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.location.LocationUseCases
 import com.cirodevs.indrverclonekotlin.domain.useCases.user.UserUpdateUseCase
 import com.cirodevs.indrverclonekotlin.domain.useCases.user.UserUseCases
@@ -41,7 +43,9 @@ object UseCaseModule {
     )
     @Provides
     fun provideLocationUseCases(locationRepository: LocationRepository) = LocationUseCases(
-            getLocationUpdateUseCases = GetLocationUpdateUseCases(locationRepository)
+            getLocationUpdateUseCases = GetLocationUpdateUseCases(locationRepository),
+            getPlacePredictionUseCase = GetPlacePredictionUseCase(locationRepository),
+            getPlaceDetailsUseCase = GetPlaceDetailsUseCase(locationRepository)
     )
 
 

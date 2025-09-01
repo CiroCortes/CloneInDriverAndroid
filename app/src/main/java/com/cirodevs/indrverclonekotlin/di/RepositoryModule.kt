@@ -10,6 +10,7 @@ import com.cirodevs.indrverclonekotlin.data.repository.UserRepositoryImpl
 import com.cirodevs.indrverclonekotlin.domain.repository.AuthRepository
 import com.cirodevs.indrverclonekotlin.domain.repository.LocationRepository
 import com.cirodevs.indrverclonekotlin.domain.repository.UserRepository
+import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,8 +29,8 @@ object RepositoryModule {
     fun provideUserRepository(userService: UserService): UserRepository = UserRepositoryImpl(userService)
 
     @Provides
-    fun provideLocationRepository(locationDataSource: LocationDataSource): LocationRepository =
-        LocationRepositoryImpl(locationDataSource)
+    fun provideLocationRepository(locationDataSource: LocationDataSource,placesClient: PlacesClient): LocationRepository =
+        LocationRepositoryImpl(locationDataSource,placesClient)
 
 
 
