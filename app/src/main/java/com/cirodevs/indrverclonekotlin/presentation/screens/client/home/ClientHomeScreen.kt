@@ -70,7 +70,9 @@ fun ClientHomeScreen(navHostController: NavHostController = rememberNavControlle
     val scope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
+
         drawerState = drawerState,
+        gesturesEnabled = false, // this is to disable the swipe gesture
         drawerContent = {
             ModalDrawerSheet {
                 Spacer(modifier = Modifier.height(16.dp))
